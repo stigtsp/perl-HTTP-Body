@@ -5,7 +5,7 @@ use strict;
 use Carp       qw[ ];
 use List::Util qw[ first ];
 
-our $PARSERS = {
+our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::Octetstream',
     'application/x-www-form-urlencoded' => 'HTTP::Body::Urlencoded',
     'multipart/form-data'               => 'HTTP::Body::Multipart'
@@ -17,40 +17,43 @@ sub new {
     unless ( @_ == 3 ) {
         Carp::croak( $class, '->new( $content_type, $content_length )' );
     }
-    
-    my $type = first { index( lc($content_type), $_ ) >= 0 } keys %{ $PARSERS };
-    my $body = $PARSERS->{ $type || 'application/octet-stream' };
-    
+
+    my $type = first { index( lc($content_type), $_ ) >= 0 } keys %{$TYPES};
+    my $body = $TYPES->{ $type || 'application/octet-stream' };
+
     eval "require $body";
-    
-    if ( $@ ) {
+
+    if ($@) {
         die $@;
     }
-    
+
     my $self = {
         buffer         => '',
         content_length => $content_length,
         content_type   => $content_type,
         length         => 0,
-        param          => { },
-        upload         => { }
+        param          => {},
+        state          => 'buffering',
+        upload         => {}
     };
 
     bless( $self, $body );
-    
+
     return $self->init;
 }
 
 sub add {
     my $self = shift;
-    
+
     if ( defined $_[0] ) {
         $self->{buffer} .= $_[0];
-        $self->{length} += length($_[0]);
+        $self->{length} += length( $_[0] );
     }
     
-    $self->spin;
-    
+    unless ( $self->state eq 'done' ) {
+        $self->spin;
+    }
+
     return ( $self->length - $self->content_length );
 }
 
@@ -82,6 +85,12 @@ sub length {
 
 sub spin {
     Carp::croak('Define abstract method spin() in implementation');
+}
+
+sub state {
+    my $self = shift;
+    $self->{state} = shift if @_;
+    return $self->{state};    
 }
 
 sub param {

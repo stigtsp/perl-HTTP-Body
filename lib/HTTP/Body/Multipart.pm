@@ -25,11 +25,7 @@ sub spin {
 
     while (1) {
 
-        if ( $self->{state} eq 'done' ) {
-            return 0;
-        }
-
-        elsif ( $self->{state} =~ /^(preamble|boundary|header|body)$/ ) {
+        if ( $self->{state} =~ /^(preamble|boundary|header|body)$/ ) {
             my $method = "parse_$1";
             return unless $self->$method;
         }
@@ -192,6 +188,7 @@ sub parse_body {
 sub handler {
     my ( $self, $part ) = @_;
 
+    # skip parts without content
     if ( $part->{done} && $part->{size} == 0 ) {
         return 0;
     }
