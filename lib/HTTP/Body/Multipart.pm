@@ -16,20 +16,12 @@ sub init {
 
     $self->{boundary} = $1;
     $self->{state}    = 'preamble';
-    $self->{length}   = $self->content_length - $self->content_length * 2;
 
     return $self;
 }
 
-sub add {
-    my ( $self, $buffer ) = @_;
-
-    unless ( defined $buffer ) {
-        $buffer = '';
-    }
-
-    $self->{buffer} .= $buffer;
-    $self->{length} += length($buffer);
+sub spin {
+    my $self = shift;
 
     while (1) {
 
@@ -39,7 +31,7 @@ sub add {
 
         elsif ( $self->{state} =~ /^(preamble|boundary|header|body)$/ ) {
             my $method = "parse_$1";
-            return $self->{length} unless $self->$method;
+            return unless $self->$method;
         }
 
         else {
@@ -49,9 +41,7 @@ sub add {
 }
 
 sub boundary {
-    my $self = shift;
-    $self->{boundary} = shift if @_;
-    return $self->{boundary};
+    return shift->{boundary};
 }
 
 sub boundary_begin {
@@ -99,17 +89,20 @@ sub parse_boundary {
     if ( index( $self->{buffer}, $self->delimiter_begin . $self->crlf ) == 0 ) {
 
         substr( $self->{buffer}, 0, length( $self->delimiter_begin ) + 2, '' );
-        $self->{current}  = {};
-        $self->{state}    = 'header';
+        $self->{part}  = {};
+        $self->{state} = 'header';
 
         return 1;
     }
 
     if ( index( $self->{buffer}, $self->delimiter_end . $self->crlf ) == 0 ) {
-        $self->{current}  = {};
-        $self->{state}    = 'done';
+        
+        substr( $self->{buffer}, 0, length( $self->delimiter_end ) + 2, '' );
+        $self->{part}  = {};
+        $self->{state} = 'done';
+        
         return 0;
-    }    
+    }
 
     return 0;
 }
@@ -146,14 +139,14 @@ sub parse_header {
 
         ( my $field = $1 ) =~ s/\b(\w)/uc($1)/eg;
 
-        if ( exists $self->{current}->{headers}->{$field} ) {
-            for ( $self->{current}->{headers}->{$field} ) {
+        if ( exists $self->{part}->{headers}->{$field} ) {
+            for ( $self->{part}->{headers}->{$field} ) {
                 $_ = [$_] unless ref($_) eq "ARRAY";
                 push( @$_, $header );
             }
         }
         else {
-            $self->{current}->{headers}->{$field} = $header;
+            $self->{part}->{headers}->{$field} = $header;
         }
     }
 
@@ -176,20 +169,20 @@ sub parse_body {
             return 0;
         }
 
-        $self->{current}->{data} .= substr( $self->{buffer}, 0, $length, '' );
-        $self->{current}->{size} += $length;
-        $self->{current}->{done}  = 0;
+        $self->{part}->{data} .= substr( $self->{buffer}, 0, $length, '' );
+        $self->{part}->{size} += $length;
+        $self->{part}->{done}  = 0;
 
-        $self->handler( $self->{current} );
+        $self->handler( $self->{part} );
 
         return 0;
     }
 
-    $self->{current}->{data} .= substr( $self->{buffer}, 0, $index, '' );
-    $self->{current}->{size} += $index;
-    $self->{current}->{done}  = 1;
+    $self->{part}->{data} .= substr( $self->{buffer}, 0, $index, '' );
+    $self->{part}->{size} += $index;
+    $self->{part}->{done}  = 1;
 
-    $self->handler( $self->{current} );
+    $self->handler( $self->{part} );
 
     $self->{state} = 'boundary';
 
@@ -229,8 +222,9 @@ sub handler {
 
         if ( $part->{filename} ) {
             
-            my $fh = delete $part->{fh};
-            $fh->close;
+            $part->{fh}->close;
+            
+            delete @{ $part }{ qw[ done fh ] };
             
             $self->upload( $part->{name}, $part );
         }

@@ -2,9 +2,8 @@ package HTTP::Body;
 
 use strict;
 
-use Carp         qw[ ];
-use List::Util   qw[ first ];
-use Scalar::Util qw[ blessed ];
+use Carp       qw[ ];
+use List::Util qw[ first ];
 
 our $PARSERS = {
     'application/octet-stream'          => 'HTTP::Body::Octetstream',
@@ -32,6 +31,7 @@ sub new {
         buffer         => '',
         content_length => $content_length,
         content_type   => $content_type,
+        length         => 0,
         param          => { },
         upload         => { }
     };
@@ -42,11 +42,16 @@ sub new {
 }
 
 sub add {
-    Carp::croak('Define abstract method add() in implementation');
-}
-
-sub init {
-    return $_[0];
+    my $self = shift;
+    
+    if ( defined $_[0] ) {
+        $self->{buffer} .= $_[0];
+        $self->{length} += length($_[0]);
+    }
+    
+    $self->spin;
+    
+    return ( $self->length - $self->content_length );
 }
 
 sub body {
@@ -55,12 +60,28 @@ sub body {
     return $self->{body};
 }
 
+sub buffer {
+    return shift->{buffer};
+}
+
 sub content_length {
     return shift->{content_length};
 }
 
 sub content_type {
     return shift->{content_type};
+}
+
+sub init {
+    return $_[0];
+}
+
+sub length {
+    return shift->{length};
+}
+
+sub spin {
+    Carp::croak('Define abstract method spin() in implementation');
 }
 
 sub param {
