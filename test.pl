@@ -10,11 +10,11 @@ use IO::File;
 use YAML qw[LoadFile];
 
 my $number = $ARGV[0] || 1;
-my $test   = $ARGV[1] || 'multipart';
+my $what   = $ARGV[1] || 'multipart';
 
 
-my $headers = LoadFile( sprintf( "t/data/%s/%.3d-headers.yml", $test, $number ) );
-my $content = IO::File->new( sprintf( "t/data/%s/%.3d-content.dat", $test, $number ), O_RDONLY );
+my $headers = LoadFile( sprintf( "t/data/%s/%.3d-headers.yml", $what, $number ) );
+my $content = IO::File->new( sprintf( "t/data/%s/%.3d-content.dat", $what, $number ), O_RDONLY );
 my $body    = HTTP::Body->new( $headers->{'Content-Type'}, $headers->{'Content-Length'} );
 
 binmode $content;

@@ -4,7 +4,7 @@ use strict;
 use base 'HTTP::Body';
 use bytes;
 
-our $DECODE = qr/%(u?[0-9a-fA-F]{2,4})/;
+our $DECODE = qr/%u?([0-9a-fA-F]{2,4})/;
 
 sub spin {
     my $self = shift;
