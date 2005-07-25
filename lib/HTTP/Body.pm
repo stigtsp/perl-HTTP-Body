@@ -6,9 +6,9 @@ use Carp       qw[ ];
 use List::Util qw[ first ];
 
 our $TYPES = {
-    'application/octet-stream'          => 'HTTP::Body::Octetstream',
-    'application/x-www-form-urlencoded' => 'HTTP::Body::Urlencoded',
-    'multipart/form-data'               => 'HTTP::Body::Multipart'
+    'application/octet-stream'          => 'HTTP::Body::OctetStream',
+    'application/x-www-form-urlencoded' => 'HTTP::Body::UrlEncoded',
+    'multipart/form-data'               => 'HTTP::Body::MultiPart'
 };
 
 sub new {

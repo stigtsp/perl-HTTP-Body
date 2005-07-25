@@ -1,4 +1,4 @@
-package HTTP::Body::Multipart;
+package HTTP::Body::MultiPart;
 
 use strict;
 use base 'HTTP::Body';

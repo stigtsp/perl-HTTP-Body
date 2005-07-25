@@ -1,4 +1,4 @@
-package HTTP::Body::Octetstream;
+package HTTP::Body::OctetStream;
 
 use strict;
 use base 'HTTP::Body';

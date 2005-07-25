@@ -1,4 +1,4 @@
-package HTTP::Body::Urlencoded;
+package HTTP::Body::UrlEncoded;
 
 use strict;
 use base 'HTTP::Body';
