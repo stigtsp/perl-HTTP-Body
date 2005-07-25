@@ -196,7 +196,7 @@ sub handler {
     unless ( $self->{seen}->{"$part"}++ ) {
 
         my $disposition = $part->{headers}->{'Content-Disposition'};
-        my ($name)      = $disposition =~ / name="?([^\";]+)"?"/;
+        my ($name)      = $disposition =~ / name="?([^\";]+)"?/;
         my ($filename)  = $disposition =~ / filename="?([^\"]+)"?/;
 
         $part->{name}     = $name;
@@ -211,8 +211,8 @@ sub handler {
         }
     }
 
-    if ( $part->{filename} ) {
-        $part->{fh}->write( delete $part->{data} );
+    if ( $part->{filename} && ( my $length = length( $part->{data} ) ) ) {
+        $part->{fh}->write( substr( $part->{data}, 0, $length, '' ), $length );
     }
 
     if ( $part->{done} ) {
@@ -221,7 +221,7 @@ sub handler {
             
             $part->{fh}->close;
             
-            delete @{ $part }{ qw[ done fh ] };
+            delete @{ $part }{ qw[ data done fh ] };
             
             $self->upload( $part->{name}, $part );
         }

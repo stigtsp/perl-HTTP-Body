@@ -4,7 +4,7 @@ use strict;
 use base 'HTTP::Body';
 use bytes;
 
-our $DECODE = qr/%(u?[0-9a-fA-F]{2,4})/;
+our $DECODE = qr/%([0-9a-fA-F]{2})/;
 
 sub spin {
     my $self = shift;
@@ -18,16 +18,16 @@ sub spin {
         next unless defined $name;
         next unless defined $value;
         
-        $name  =~ s/$DECODE/chr(hex($1))/eg;
         $name  =~ tr/+/ /;
-        $value =~ s/$DECODE/chr(hex($1))/eg;
+        $name  =~ s/$DECODE/chr(hex($1))/eg;
         $value =~ tr/+/ /;
+        $value =~ s/$DECODE/chr(hex($1))/eg;        
         
         $self->param( $name, $value );
     }
     
-    $self->{state}  = 'done';
     $self->{buffer} = ''
+    $self->{state}  = 'done';
 }
 
 1;
