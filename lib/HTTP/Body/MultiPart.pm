@@ -6,6 +6,26 @@ use bytes;
 
 use File::Temp 0.14;
 
+=head1 NAME
+
+HTTP::Body::Multipart - HTTP Body MultipartParser
+
+=head1 SYNOPSIS
+
+    use HTTP::Body::Multipart;
+
+=head1 DESCRIPTION
+
+HTTP Body Multipart Parser.
+
+=head1 METHODS
+
+=over 4
+
+=item init
+
+=cut
+
 sub init {
     my $self = shift;
 
@@ -19,6 +39,10 @@ sub init {
 
     return $self;
 }
+
+=item spin
+
+=cut
 
 sub spin {
     my $self = shift;
@@ -36,31 +60,59 @@ sub spin {
     }
 }
 
+=item boundary
+
+=cut
+
 sub boundary {
     return shift->{boundary};
 }
+
+=item boundary_begin
+
+=cut
 
 sub boundary_begin {
     return "--" . shift->boundary;
 }
 
+=item boundary_end
+
+=cut
+
 sub boundary_end {
     return shift->boundary_begin . "--";
 }
 
+=item crlf
+
+=cut
+
 sub crlf {
     return "\x0d\x0a";
 }
+
+=item delimiter_begin
+
+=cut
 
 sub delimiter_begin {
     my $self = shift;
     return $self->crlf . $self->boundary_begin;
 }
 
+=item delimiter_end
+
+=cut
+
 sub delimiter_end {
     my $self = shift;
     return $self->crlf . $self->boundary_end;
 }
+
+=item parse_preamble
+
+=cut
 
 sub parse_preamble {
     my $self = shift;
@@ -79,6 +131,10 @@ sub parse_preamble {
     return 1;
 }
 
+=item parse_boundary
+
+=cut
+
 sub parse_boundary {
     my $self = shift;
 
@@ -92,16 +148,20 @@ sub parse_boundary {
     }
 
     if ( index( $self->{buffer}, $self->delimiter_end . $self->crlf ) == 0 ) {
-        
+
         substr( $self->{buffer}, 0, length( $self->delimiter_end ) + 2, '' );
         $self->{part}  = {};
         $self->{state} = 'done';
-        
+
         return 0;
     }
 
     return 0;
 }
+
+=item parse_header
+
+=cut
 
 sub parse_header {
     my $self = shift;
@@ -151,6 +211,10 @@ sub parse_header {
     return 1;
 }
 
+=item parse_body
+
+=cut
+
 sub parse_body {
     my $self = shift;
 
@@ -159,7 +223,8 @@ sub parse_body {
     if ( $index < 0 ) {
 
         # make sure we have enough buffer to detect end delimiter
-        my $length = length( $self->{buffer} ) - ( length( $self->delimiter_end ) + 2 );
+        my $length =
+          length( $self->{buffer} ) - ( length( $self->delimiter_end ) + 2 );
 
         unless ( $length > 0 ) {
             return 0;
@@ -167,7 +232,7 @@ sub parse_body {
 
         $self->{part}->{data} .= substr( $self->{buffer}, 0, $length, '' );
         $self->{part}->{size} += $length;
-        $self->{part}->{done}  = 0;
+        $self->{part}->{done} = 0;
 
         $self->handler( $self->{part} );
 
@@ -176,7 +241,7 @@ sub parse_body {
 
     $self->{part}->{data} .= substr( $self->{buffer}, 0, $index, '' );
     $self->{part}->{size} += $index;
-    $self->{part}->{done}  = 1;
+    $self->{part}->{done} = 1;
 
     $self->handler( $self->{part} );
 
@@ -184,6 +249,10 @@ sub parse_body {
 
     return 1;
 }
+
+=item handler
+
+=cut
 
 sub handler {
     my ( $self, $part ) = @_;
@@ -196,8 +265,8 @@ sub handler {
     unless ( $self->{seen}->{"$part"}++ ) {
 
         my $disposition = $part->{headers}->{'Content-Disposition'};
-        my ($name)      = $disposition =~ / name="?([^\";]+)"?/;
-        my ($filename)  = $disposition =~ / filename="?([^\"]+)"?/;
+        my ($name)     = $disposition =~ / name="?([^\";]+)"?/;
+        my ($filename) = $disposition =~ / filename="?([^\"]+)"?/;
 
         $part->{name}     = $name;
         $part->{filename} = $filename;
@@ -218,11 +287,11 @@ sub handler {
     if ( $part->{done} ) {
 
         if ( $part->{filename} ) {
-            
+
             $part->{fh}->close;
-            
-            delete @{ $part }{ qw[ data done fh ] };
-            
+
+            delete @{$part}{qw[ data done fh ]};
+
             $self->upload( $part->{name}, $part );
         }
 
@@ -231,5 +300,18 @@ sub handler {
         }
     }
 }
+
+=back
+
+=head1 AUTHOR
+
+Christian Hansen, C<ch@ngmedia.com>
+
+=head1 LICENSE
+
+This library is free software . You can redistribute it and/or modify 
+it under the same terms as perl itself.
+
+=cut
 
 1;

@@ -1,0 +1,29 @@
+NAME
+    HTTP::Body - HTTP Body Parser
+
+SYNOPSIS
+        use HTTP::Body;
+
+DESCRIPTION
+    HTTP Body Parser.
+
+METHODS
+    add
+    body
+    buffer
+    content_length
+    content_type
+    init
+    length
+    spin
+    state
+    param
+    upload
+
+AUTHOR
+    Christian Hansen, "ch@ngmedia.com"
+
+LICENSE
+    This library is free software . You can redistribute it and/or modify it
+    under the same terms as perl itself.
+
