@@ -2,10 +2,8 @@ package HTTP::Body;
 
 use strict;
 
-use Carp qw[ ];
+use Carp       qw[ ];
 use List::Util qw[ first ];
-
-use overload ( q/""/ => 'stringify', fallback => 1 );
 
 our $VERSION = '0.01';
 
@@ -74,7 +72,6 @@ sub add {
 
     if ( defined $_[0] ) {
         $self->{buffer} .= $_[0];
-        $self->{body}   .= $_[0];
         $self->{length} += length( $_[0] );
     }
 
@@ -151,14 +148,6 @@ sub state {
     my $self = shift;
     $self->{state} = shift if @_;
     return $self->{state};
-}
-
-=item stringify
-
-=cut
-
-sub stringify {
-    return shift->{body};
 }
 
 =item param
