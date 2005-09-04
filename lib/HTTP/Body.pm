@@ -49,7 +49,7 @@ sub new {
 
     my $self = {
         buffer         => '',
-        body           => '',
+        body           => undef,
         content_length => $content_length,
         content_type   => $content_type,
         length         => 0,
