@@ -20,6 +20,29 @@ HTTP::Body - HTTP Body Parser
 =head1 SYNOPSIS
 
     use HTTP::Body;
+    
+    sub handler : method {
+        my ( $class, $r ) = @_;
+
+        my $content_type   = $r->headers_in->get('Content-Type');
+        my $content_length = $r->headers_in->get('Content-Length');
+        
+        my $body   = HTTP::Body->new( $content_type, $content_length );
+        my $length = $content_length;
+
+        while ( $length ) {
+
+            $r->read( my $buffer, ( $length < 8192 ) ? $length : 8192 );
+
+            $length -= length($buffer);
+            
+            $body->add($buffer);
+        }
+        
+        my $uploads = $body->upload; # hashref
+        my $params  = $body->param;  # hashref
+        my $body    = $body->body;   # IO::Handle
+    }
 
 =head1 DESCRIPTION
 
@@ -205,11 +228,12 @@ sub upload {
 =head1 AUTHOR
 
 Christian Hansen, C<ch@ngmedia.com>
-Messed up by Sebastian Riedel
+
+Sebastian Riedel, C<sri@cpan.org>
 
 =head1 LICENSE
 
-This library is free software . You can redistribute it and/or modify 
+This library is free software. You can redistribute it and/or modify 
 it under the same terms as perl itself.
 
 =cut
