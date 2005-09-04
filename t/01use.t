@@ -49,7 +49,8 @@ for my $format (qw/multipart urlencoded/) {
         is_deeply( $body->body, $results->{body}, "$num-$format body" );
         is_deeply( $body->param, $results->{param}, "$num-$format param" );
         is_deeply( $body->upload, $results->{upload}, "$num-$format upload" );
-        ok( $body->state eq 'done', "$num-$format state" );
+        cmp_ok( $body->state, 'eq', 'done', "$num-$format state" );
+        cmp_ok( $body->length, '==', $headers->{'Content-Length'}, "$num-$format length" );
     }
 }
 
