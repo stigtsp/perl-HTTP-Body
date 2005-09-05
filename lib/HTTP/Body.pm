@@ -50,7 +50,12 @@ HTTP Body Parser.
 
 =head1 METHODS
 
-=over 4
+=over 4 
+
+=item new 
+
+Constructor. Takes content type and content length as parameters,
+returns a L<HTTP::Body> object.
 
 =cut
 
@@ -88,6 +93,9 @@ sub new {
 
 =item add
 
+Add string to itnernal buffer. Will call spin unless done. returns
+length before adding self.
+
 =cut
 
 sub add {
@@ -107,6 +115,8 @@ sub add {
 
 =item body
 
+accessor for the body.
+
 =cut
 
 sub body {
@@ -117,6 +127,8 @@ sub body {
 
 =item buffer
 
+read only accessor for the buffer.
+
 =cut
 
 sub buffer {
@@ -124,6 +136,8 @@ sub buffer {
 }
 
 =item content_length
+
+read only accessor for content length
 
 =cut
 
@@ -133,6 +147,8 @@ sub content_length {
 
 =item content_type
 
+ready only accessor for the content type
+
 =cut
 
 sub content_type {
@@ -140,6 +156,8 @@ sub content_type {
 }
 
 =item init
+
+return self.
 
 =cut
 
@@ -149,6 +167,8 @@ sub init {
 
 =item length
 
+read only accessor for body length.
+
 =cut
 
 sub length {
@@ -157,6 +177,8 @@ sub length {
 
 =item spin
 
+Abstract method to spin the io handle.
+
 =cut
 
 sub spin {
@@ -164,6 +186,8 @@ sub spin {
 }
 
 =item state
+
+accessor for body state.
 
 =cut
 
@@ -174,6 +198,8 @@ sub state {
 }
 
 =item param
+
+accesor for http parameters.
 
 =cut
 
