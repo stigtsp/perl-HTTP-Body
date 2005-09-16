@@ -31,7 +31,7 @@ sub init {
 
     unless ( $self->content_type =~ /boundary=\"?([^\";,]+)\"?/ ) {
         my $content_type = $self->content_type;
-        Carp::croak("Invalid boudrary in content_type: '$content_type'");
+        Carp::croak("Invalid boundary in content_type: '$content_type'");
     }
 
     $self->{boundary} = $1;
