@@ -3,27 +3,75 @@ NAME
 
 SYNOPSIS
         use HTTP::Body;
+    
+        sub handler : method {
+            my ( $class, $r ) = @_;
+
+            my $content_type   = $r->headers_in->get('Content-Type');
+            my $content_length = $r->headers_in->get('Content-Length');
+        
+            my $body   = HTTP::Body->new( $content_type, $content_length );
+            my $length = $content_length;
+
+            while ( $length ) {
+
+                $r->read( my $buffer, ( $length < 8192 ) ? $length : 8192 );
+
+                $length -= length($buffer);
+            
+                $body->add($buffer);
+            }
+        
+            my $uploads = $body->upload; # hashref
+            my $params  = $body->param;  # hashref
+            my $body    = $body->body;   # IO::Handle
+        }
 
 DESCRIPTION
     HTTP Body Parser.
 
 METHODS
-    add
+    new Constructor. Takes content type and content length as parameters,
+        returns a HTTP::Body object.
+
+    add Add string to itnernal buffer. Will call spin unless done. returns
+        length before adding self.
+
     body
+        accessor for the body.
+
     buffer
+        read only accessor for the buffer.
+
     content_length
+        read only accessor for content length
+
     content_type
+        ready only accessor for the content type
+
     init
+        return self.
+
     length
+        read only accessor for body length.
+
     spin
+        Abstract method to spin the io handle.
+
     state
+        accessor for body state.
+
     param
+        accesor for http parameters.
+
     upload
 
 AUTHOR
     Christian Hansen, "ch@ngmedia.com"
 
+    Sebastian Riedel, "sri@cpan.org"
+
 LICENSE
-    This library is free software . You can redistribute it and/or modify it
+    This library is free software. You can redistribute it and/or modify it
     under the same terms as perl itself.
 
