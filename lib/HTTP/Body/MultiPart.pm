@@ -8,7 +8,7 @@ use File::Temp 0.14;
 
 =head1 NAME
 
-HTTP::Body::Multipart - HTTP Body MultipartParser
+HTTP::Body::MultiPart - HTTP Body Multipart Parser
 
 =head1 SYNOPSIS
 

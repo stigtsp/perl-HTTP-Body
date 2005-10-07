@@ -5,7 +5,7 @@ use strict;
 use Carp       qw[ ];
 use List::Util qw[ first ];
 
-our $VERSION = '0.2';
+our $VERSION = '0.201';
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
@@ -93,7 +93,7 @@ sub new {
 
 =item add
 
-Add string to itnernal buffer. Will call spin unless done. returns
+Add string to internal buffer. Will call spin unless done. returns
 length before adding self.
 
 =cut
@@ -250,6 +250,10 @@ sub upload {
 }
 
 =back
+
+=head1 BUGS
+
+Chunked requests are currently not supported.
 
 =head1 AUTHOR
 
