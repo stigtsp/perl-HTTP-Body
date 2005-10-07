@@ -8,7 +8,7 @@ use File::Temp 0.14;
 
 =head1 NAME
 
-HTTP::Body - HTTP Body OctetStream Parser
+HTTP::Body::OctetStream - HTTP Body OctetStream Parser
 
 =head1 SYNOPSIS
 

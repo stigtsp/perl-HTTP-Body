@@ -5,7 +5,7 @@ use strict;
 use Carp       qw[ ];
 use List::Util qw[ first ];
 
-our $VERSION = '0.01';
+our $VERSION = '0.2';
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',

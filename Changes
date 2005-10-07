@@ -1,4 +1,7 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+0.02  2005-10-07 00:00:00 2005
+        - fixed POD
+
 0.01  2005-09-07 00:00:00 2005
         - first release

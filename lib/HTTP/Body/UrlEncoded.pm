@@ -8,7 +8,7 @@ our $DECODE = qr/%([0-9a-fA-F]{2})/;
 
 =head1 NAME
 
-HTTP::Body - HTTP Body UrlEncoded Parser
+HTTP::Body::UrlEncoded - HTTP Body UrlEncoded Parser
 
 =head1 SYNOPSIS
 
