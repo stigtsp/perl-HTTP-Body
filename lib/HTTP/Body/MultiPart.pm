@@ -223,8 +223,7 @@ sub parse_body {
     if ( $index < 0 ) {
 
         # make sure we have enough buffer to detect end delimiter
-        my $length =
-          length( $self->{buffer} ) - ( length( $self->delimiter_end ) + 2 );
+        my $length = length( $self->{buffer} ) - ( length( $self->delimiter_end ) + 2 );
 
         unless ( $length > 0 ) {
             return 0;
