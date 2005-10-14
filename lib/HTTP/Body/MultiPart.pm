@@ -261,7 +261,7 @@ sub handler {
         return 0;
     }
 
-    unless ( $self->{seen}->{"$part"}++ ) {
+    unless ( exists $part->{name} ) {
 
         my $disposition = $part->{headers}->{'Content-Disposition'};
         my ($name)     = $disposition =~ / name="?([^\";]+)"?/;
