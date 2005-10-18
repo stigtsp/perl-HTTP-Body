@@ -273,7 +273,7 @@ sub handler {
 
         if ($filename) {
 
-            my $fh = File::Temp->new; #( UNLINK => 0 );
+            my $fh = File::Temp->new( UNLINK => 0 );
 
             $part->{fh}       = $fh;
             $part->{tempname} = $fh->filename;
