@@ -115,7 +115,7 @@ foreach my $benchmark ( @benchmarks ) {
     printf( "Benchmark      : %s\n", $headers->{'Benchmark'} ) if $headers->{'Benchmark'};
     print "\n";
 
-    cmpthese( -1, $benchmarks );
+    timethese( -1, $benchmarks );
 
     printf( "%s\n", "-" x 80 ) if @benchmarks > 1;
 }
