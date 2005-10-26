@@ -9,7 +9,6 @@ WriteMakefile(
         Carp         => 0,
         File::Temp   => '0.14',
         IO::File     => 0,
-        List::Util   => 0,
         YAML         => 0
     }
 );

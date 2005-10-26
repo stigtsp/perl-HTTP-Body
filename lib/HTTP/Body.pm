@@ -3,7 +3,6 @@ package HTTP::Body;
 use strict;
 
 use Carp       qw[ ];
-use List::Util qw[ first ];
 
 our $VERSION = '0.201';
 
@@ -66,7 +65,13 @@ sub new {
         Carp::croak( $class, '->new( $content_type, $content_length )' );
     }
 
-    my $type = first { index( lc($content_type), $_ ) >= 0 } keys %{$TYPES};
+    my $type;
+    foreach my $supported ( keys %{$TYPES} ) {
+        if ( index( lc($content_type), $supported ) >= 0 ) {
+            $type = $supported;
+        }
+    }
+
     my $body = $TYPES->{ $type || 'application/octet-stream' };
 
     eval "require $body";
