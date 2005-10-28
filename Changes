@@ -1,11 +1,11 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
-0.03
-        - removed use of List::Util first, which leaks memory!
+0.03  2005-10-27 20:00:00
+        - removed use of List::Util first due to memory leakage.
           http://rt.cpan.org/NoAuth/Bug.html?id=13891
 
-0.02  2005-10-07 00:00:00 2005
+0.02  2005-10-07
         - fixed POD
 
-0.01  2005-09-07 00:00:00 2005
+0.01  2005-09-07
         - first release
