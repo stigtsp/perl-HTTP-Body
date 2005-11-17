@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+0.5   2005-11-17 00:00:00
+        - Updated for PAR compatibility
+
 0.4   2005-11-09 01:00:00
         - Version bump to 0.4 so CPAN.pm installs the right version.
 

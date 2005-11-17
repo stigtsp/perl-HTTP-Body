@@ -4,13 +4,17 @@ use strict;
 
 use Carp       qw[ ];
 
-our $VERSION = '0.4';
+our $VERSION = '0.5';
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
     'application/x-www-form-urlencoded' => 'HTTP::Body::UrlEncoded',
     'multipart/form-data'               => 'HTTP::Body::MultiPart'
 };
+
+require HTTP::Body::OctetStream;
+require HTTP::Body::UrlEncoded;
+require HTTP::Body::MultiPart;
 
 =head1 NAME
 
