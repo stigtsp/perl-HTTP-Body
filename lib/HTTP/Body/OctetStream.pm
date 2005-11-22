@@ -34,7 +34,7 @@ sub spin {
     }
 
     if ( my $length = length( $self->{buffer} ) ) {
-        $self->body->write( substr( $self->{buffer}, 0, $length ), $length );
+        $self->body->write( substr( $self->{buffer}, 0, $length, '' ), $length );
     }
 
     if ( $self->length == $self->content_length ) {
