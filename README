@@ -34,7 +34,7 @@ METHODS
     new Constructor. Takes content type and content length as parameters,
         returns a HTTP::Body object.
 
-    add Add string to itnernal buffer. Will call spin unless done. returns
+    add Add string to internal buffer. Will call spin unless done. returns
         length before adding self.
 
     body
@@ -65,6 +65,9 @@ METHODS
         accesor for http parameters.
 
     upload
+
+BUGS
+    Chunked requests are currently not supported.
 
 AUTHOR
     Christian Hansen, "ch@ngmedia.com"
