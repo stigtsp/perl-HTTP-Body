@@ -1,6 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
-0.7   2007-03-23 10:00:00
+0.7
+        - Some browsers such as MSIE send extra data after the body content.  We now
+          properly ignore anything beyond Content-Length.
         - Fixed parsing an empty (zero-length) file using multipart.
           http://rt.cpan.org/NoAuth/Bug.html?id=25392
 

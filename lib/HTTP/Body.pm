@@ -109,17 +109,26 @@ length before adding self.
 
 sub add {
     my $self = shift;
+    
+    my $cl = $self->content_length;
 
     if ( defined $_[0] ) {
-        $self->{buffer} .= $_[0];
         $self->{length} += length( $_[0] );
+        
+        # Don't allow buffer data to exceed content-length
+        if ( $self->{length} > $cl ) {
+            $_[0] = substr $_[0], 0, $cl - $self->{length};
+            $self->{length} = $cl;
+        }
+        
+        $self->{buffer} .= $_[0];
     }
 
     unless ( $self->state eq 'done' ) {
         $self->spin;
     }
 
-    return ( $self->length - $self->content_length );
+    return ( $self->length - $cl );
 }
 
 =item body

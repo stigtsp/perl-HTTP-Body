@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More tests => 10;
 
 use Cwd;
 use HTTP::Body;
@@ -13,7 +13,7 @@ use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'urlencoded' );
 
-for ( my $i = 1; $i <= 1; $i++ ) {
+for ( my $i = 1; $i <= 2; $i++ ) {
 
     my $test    = sprintf( "%.3d", $i );
     my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
