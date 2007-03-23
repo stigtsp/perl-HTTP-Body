@@ -1,7 +1,11 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
-        - 0 length files dont silent disapear, Ash Berlin http://rt.cpan.org/NoAuth/Bug.html?id=25392
-        - YAML is no longer a prereq, tests just wont do anything without it or YAML::Syck
+0.8
+        - Major refactor...
+
+0.7   2007-03-23 10:00:00
+        - Fixed parsing an empty (zero-length) file using multipart.
+          http://rt.cpan.org/NoAuth/Bug.html?id=25392
 
 0.6   2006-01-06 00:00:00
         - Fixed buffer bug in OctetStream, reported by Daisuke Murase <typester@cpan.org>.
@@ -14,12 +18,12 @@ This file documents the revision history for Perl extension HTTP::Body.
 0.4   2005-11-09 01:00:00
         - Version bump to 0.4 so CPAN.pm installs the right version.
 
-0.3  2005-10-27 20:00:00
+0.03  2005-10-27 20:00:00
         - removed use of List::Util first due to memory leakage.
           http://rt.cpan.org/NoAuth/Bug.html?id=13891
 
 0.2   2005-10-07
         - fixed POD
 
-0.1  2005-09-07
+0.01  2005-09-07
         - first release

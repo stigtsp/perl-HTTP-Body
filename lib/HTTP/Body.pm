@@ -10,7 +10,7 @@ use HTTP::Body::Parser  qw[];
 
 __PACKAGE__->mk_accessors( qw[ context parser ] );
 
-our $VERSION = 0.7;
+our $VERSION = 0.8;
 
 =head1 NAME
 
