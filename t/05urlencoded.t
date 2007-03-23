@@ -3,13 +3,21 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More 
+
+eval { require YAML; import YAML 'LoadFile'; };
+if ($@) {
+  eval { require YAML::Syck; import YAML::Syck 'LoadFile'; }
+}
+
+plan skip_all => 'Tests need YAML or YAML::Syck' if $@;
+
+plan tests => 5;
 
 use Cwd;
 use HTTP::Body;
 use File::Spec::Functions;
 use IO::File;
-use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'urlencoded' );
 

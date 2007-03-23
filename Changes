@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+        - 0 length files dont silent disapear, Ash Berlin http://rt.cpan.org/NoAuth/Bug.html?id=25392
+        - YAML is no longer a prereq, tests just wont do anything without it or YAML::Syck
+
 0.6   2006-01-06 00:00:00
         - Fixed buffer bug in OctetStream, reported by Daisuke Murase <typester@cpan.org>.
         - Fixed YAML prereq, reported by Jess Robinson

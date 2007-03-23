@@ -26,6 +26,20 @@ __PACKAGE__->register_parser( 'application/octet-stream'          => 'HTTP::Body
 __PACKAGE__->register_parser( 'application/x-www-form-urlencoded' => 'HTTP::Body::Parser::UrlEncoded' );
 __PACKAGE__->register_parser( 'multipart/form-data'               => 'HTTP::Body::Parser::MultiPart'   );
 
+=head1 NAME
+
+HTTP::Body::Parser
+
+=head1 METHODS
+
+=over 4
+
+=item new($hashref)
+
+Constructor.
+
+=cut
+
 sub new {
     my $class  = ref $_[0] ? ref shift : shift;
     my $params = Params::Validate::validate_with(
@@ -126,5 +140,20 @@ sub put {
 
     return $self->parse;
 }
+
+=back
+
+=head1 AUTHOR
+
+Christian Hansen, C<ch@ngmedia.com>
+
+This pod written by Ash Berlin, C<ash@cpan.org>.
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify 
+it under the same terms as perl itself.
+
+=cut
 
 1;

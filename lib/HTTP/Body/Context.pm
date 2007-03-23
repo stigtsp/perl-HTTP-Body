@@ -11,6 +11,32 @@ use Scalar::Util     qw[];
 
 __PACKAGE__->mk_accessors( qw[ content headers param upload ] );
 
+=head1 NAME
+
+HTTP::Body::Context
+
+=head1 METHODS
+
+=over
+
+=item new($hashref)
+
+Constructor. Takes the following arguments in a hashref:
+
+=over
+
+=item headers
+
+HTTP::Headers object, or an array or hashref
+
+=item param (optional)
+
+=item upload (optional)
+
+=back
+
+=cut
+
 sub new {
     my $class  = ref $_[0] ? ref shift : shift;
     my $params = Params::Validate::validate_with(
@@ -66,17 +92,44 @@ sub initialize {
     return $self;
 }
 
+=item context_length
+
+=cut
+
 sub content_length {
     return shift->headers->content_length(@_);
 }
+
+=item content_type
+
+=cut
 
 sub content_type {
     return shift->headers->content_type(@_);
 }
 
+=item header
+
+=cut
+
 sub header {
     return shift->headers->header(@_);
 }
+
+=back
+
+=head1 AUTHOR
+
+Christian Hansen, C<ch@ngmedia.com>
+
+This pod written by Ash Berlin, C<ash@cpan.org>.
+
+=head1 LICENSE
+
+This library is free software. You can redistribute it and/or modify 
+it under the same terms as perl itself.
+
+=cut
 
 1;
 

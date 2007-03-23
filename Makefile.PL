@@ -15,6 +15,5 @@ WriteMakefile(
         IO::File         => 0,
         Params::Validate => 0,
         Scalar::Util     => 0,
-        YAML             => '0.39'
     }
 );
