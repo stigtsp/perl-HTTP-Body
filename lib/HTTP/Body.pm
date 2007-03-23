@@ -49,7 +49,11 @@ HTTP::Body - HTTP Body Parser
 
 =head1 DESCRIPTION
 
-HTTP Body Parser.
+HTTP::Body parses chunks of HTTP POST data and supports 
+application/octet-stream, application/x-www-form-urlencoded, and
+multipart/form-data.
+
+It is currently used by L<Catalyst> to parse POST bodies.
 
 =head1 METHODS
 
