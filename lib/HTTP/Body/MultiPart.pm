@@ -257,16 +257,17 @@ sub parse_body {
 sub handler {
     my ( $self, $part ) = @_;
 
+    my $disposition = $part->{headers}->{'Content-Disposition'};
+    my ($name)     = $disposition =~ / name="?([^\";]+)"?/;
+    my ($filename) = $disposition =~ / filename="?([^\"]+)"?/;
+
     # skip parts without content
-    if ( $part->{done} && $part->{size} == 0 ) {
+    if ( $part->{done} && $part->{size} == 0 && !$filename) {
         return 0;
     }
 
     unless ( exists $part->{name} ) {
 
-        my $disposition = $part->{headers}->{'Content-Disposition'};
-        my ($name)     = $disposition =~ / name="?([^\";]+)"?/;
-        my ($filename) = $disposition =~ / filename="?([^\"]+)"?/;
 
         $part->{name}     = $name;
         $part->{filename} = $filename;

@@ -1,5 +1,9 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+0.7   2007-03-23 10:00:00
+        - Fixed parsing an empty (zero-length) file using multipart.
+          http://rt.cpan.org/NoAuth/Bug.html?id=25392
+
 0.6   2006-01-06 00:00:00
         - Fixed buffer bug in OctetStream, reported by Daisuke Murase <typester@cpan.org>.
         - Fixed YAML prereq, reported by Jess Robinson
