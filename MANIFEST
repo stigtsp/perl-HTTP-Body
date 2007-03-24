@@ -55,3 +55,6 @@ t/data/octetstream/002-results.dat
 t/data/urlencoded/001-content.dat
 t/data/urlencoded/001-headers.yml
 t/data/urlencoded/001-results.yml
+t/data/urlencoded/002-content.dat
+t/data/urlencoded/002-headers.yml
+t/data/urlencoded/002-results.yml

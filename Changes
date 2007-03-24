@@ -1,6 +1,6 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
-0.8
+0.8   2007-03-23 18:40:00
         - Some browsers such as MSIE send extra data after the body content.  We now
           properly ignore anything beyond Content-Length.
 
