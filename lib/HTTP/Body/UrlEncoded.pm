@@ -6,6 +6,15 @@ use bytes;
 
 our $DECODE = qr/%([0-9a-fA-F]{2})/;
 
+our %hex_chr;
+
+BEGIN {
+    for my $num ( 0 .. 255 ) {
+        my $h = sprintf "%02X", $num;
+        $hex_chr{ lc $h } = $hex_chr{ uc $h } = chr $num;
+    }
+}
+
 =head1 NAME
 
 HTTP::Body::UrlEncoded - HTTP Body UrlEncoded Parser
@@ -30,6 +39,8 @@ sub spin {
     my $self = shift;
 
     return unless $self->length == $self->content_length;
+    
+    $self->{buffer} =~ tr/+/ /;
 
     for my $pair ( split( /[&;]/, $self->{buffer} ) ) {
 
@@ -37,11 +48,9 @@ sub spin {
 
         next unless defined $name;
         next unless defined $value;
-
-        $name  =~ tr/+/ /;
-        $name  =~ s/$DECODE/chr(hex($1))/eg;
-        $value =~ tr/+/ /;
-        $value =~ s/$DECODE/chr(hex($1))/eg;
+        
+        $name  =~ s/$DECODE/$hex_chr{$1}/gs;
+        $value =~ s/$DECODE/$hex_chr{$1}/gs;
 
         $self->param( $name, $value );
     }
