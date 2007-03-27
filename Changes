@@ -1,7 +1,11 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
-0.8
-        - Major refactor...
+0.9
+        - Small performance tweaks to urlencoded parser.
+
+0.8   2007-03-23 18:40:00
+        - Some browsers such as MSIE send extra data after the body content.  We now
+          properly ignore anything beyond Content-Length.
 
 0.7   2007-03-23 10:00:00
         - Fixed parsing an empty (zero-length) file using multipart.

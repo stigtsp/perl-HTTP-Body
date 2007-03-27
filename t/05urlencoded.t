@@ -3,25 +3,17 @@
 use strict;
 use warnings;
 
-use Test::More 
-
-eval { require YAML; import YAML 'LoadFile'; };
-if ($@) {
-  eval { require YAML::Syck; import YAML::Syck 'LoadFile'; }
-}
-
-plan skip_all => 'Tests need YAML or YAML::Syck' if $@;
-
-plan tests => 5;
+use Test::More tests => 10;
 
 use Cwd;
 use HTTP::Body;
 use File::Spec::Functions;
 use IO::File;
+use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'urlencoded' );
 
-for ( my $i = 1; $i <= 1; $i++ ) {
+for ( my $i = 1; $i <= 2; $i++ ) {
 
     my $test    = sprintf( "%.3d", $i );
     my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );

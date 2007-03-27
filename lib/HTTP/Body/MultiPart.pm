@@ -1,34 +1,52 @@
-package HTTP::Body::Parser::MultiPart;
+package HTTP::Body::MultiPart;
 
 use strict;
+use base 'HTTP::Body';
 use bytes;
-use base 'HTTP::Body::Parser';
 
-use Carp       qw[];
-use Errno      qw[];
-use File::Temp qw[];
+use IO::File;
+use File::Temp 0.14;
 
-__PACKAGE__->mk_accessors( qw[ boundary status state ] );
+=head1 NAME
 
-sub initialize {
-    my ( $self, $params ) = @_;
+HTTP::Body::MultiPart - HTTP Body Multipart Parser
 
-    my $content_type = $params->{context}->header('Content-Type');
+=head1 SYNOPSIS
 
-    unless ( $content_type =~ /boundary=\"?([^\";,]+)\"?/ ) {
-        Carp::croak qq/Invalid boundary in content_type: '$content_type'/;
+    use HTTP::Body::Multipart;
+
+=head1 DESCRIPTION
+
+HTTP Body Multipart Parser.
+
+=head1 METHODS
+
+=over 4
+
+=item init
+
+=cut
+
+sub init {
+    my $self = shift;
+
+    unless ( $self->content_type =~ /boundary=\"?([^\";,]+)\"?/ ) {
+        my $content_type = $self->content_type;
+        Carp::croak("Invalid boundary in content_type: '$content_type'");
     }
 
-    $params->{boundary} = $1;
-    $params->{state}    = 'preamble';
+    $self->{boundary} = $1;
+    $self->{state}    = 'preamble';
 
-    return $self->SUPER::initialize($params);
+    return $self;
 }
 
-sub parse {
+=item spin
+
+=cut
+
+sub spin {
     my $self = shift;
-    
-    return if $self->state eq 'done';
 
     while (1) {
 
@@ -38,30 +56,64 @@ sub parse {
         }
 
         else {
-            Carp::croak qq/Unknown state: '$self->{state}'/;
+            Carp::croak('Unknown state');
         }
     }
 }
 
-sub boundary_begin {
-    return "--" . $_[0]->boundary;
+=item boundary
+
+=cut
+
+sub boundary {
+    return shift->{boundary};
 }
 
-sub boundary_end {
-    return $_[0]->boundary_begin . "--";
+=item boundary_begin
+
+=cut
+
+sub boundary_begin {
+    return "--" . shift->boundary;
 }
+
+=item boundary_end
+
+=cut
+
+sub boundary_end {
+    return shift->boundary_begin . "--";
+}
+
+=item crlf
+
+=cut
 
 sub crlf {
     return "\x0d\x0a";
 }
 
+=item delimiter_begin
+
+=cut
+
 sub delimiter_begin {
-    return $_[0]->crlf . $_[0]->boundary_begin;
+    my $self = shift;
+    return $self->crlf . $self->boundary_begin;
 }
 
+=item delimiter_end
+
+=cut
+
 sub delimiter_end {
-    return $_[0]->crlf . $_[0]->boundary_end;
+    my $self = shift;
+    return $self->crlf . $self->boundary_end;
 }
+
+=item parse_preamble
+
+=cut
 
 sub parse_preamble {
     my $self = shift;
@@ -79,6 +131,10 @@ sub parse_preamble {
 
     return 1;
 }
+
+=item parse_boundary
+
+=cut
 
 sub parse_boundary {
     my $self = shift;
@@ -103,6 +159,10 @@ sub parse_boundary {
 
     return 0;
 }
+
+=item parse_header
+
+=cut
 
 sub parse_header {
     my $self = shift;
@@ -152,6 +212,10 @@ sub parse_header {
     return 1;
 }
 
+=item parse_body
+
+=cut
+
 sub parse_body {
     my $self = shift;
 
@@ -186,6 +250,10 @@ sub parse_body {
     return 1;
 }
 
+=item handler
+
+=cut
+
 sub handler {
     my ( $self, $part ) = @_;
 
@@ -206,31 +274,15 @@ sub handler {
 
         if ($filename) {
 
-            my $fh = File::Temp->new( UNLINK => 0,
-				      (defined $self->{tmpdir} ? ( DIR => $self->{tmpdir} ) : ())
-				  );
+            my $fh = File::Temp->new( UNLINK => 0 );
 
             $part->{fh}       = $fh;
             $part->{tempname} = $fh->filename;
         }
     }
 
-    if ( $part->{filename} && length $part->{data} ) {
-        
-        if ( $part->{done} || length $part->{data} >= $self->bufsize ) {
-            
-            my ( $r, $w, $s ) = ( length $part->{data}, 0, 0 );
-
-            for ( $w = 0; $w < $r; $w += $s || 0 ) {
-
-                $s = $part->{fh}->syswrite( $part->{data}, $r - $w, $w );
-
-                Carp::croak qq/Failed to syswrite buffer to temporary file. Reason: $!./
-                  unless defined $s || $! == Errno::EINTR;
-            }
-
-            $part->{data} = '';
-        }
+    if ( $part->{filename} && ( my $length = length( $part->{data} ) ) ) {
+        $part->{fh}->write( substr( $part->{data}, 0, $length, '' ), $length );
     }
 
     if ( $part->{done} ) {
@@ -239,15 +291,28 @@ sub handler {
 
             $part->{fh}->close;
 
-            delete @{ $part }{qw[ data done fh ]};
+            delete @{$part}{qw[ data done fh ]};
 
-            $self->context->upload->add( $part->{name} => $part );
+            $self->upload( $part->{name}, $part );
         }
 
         else {
-            $self->context->param->add( $part->{name} => $part->{data} );
+            $self->param( $part->{name}, $part->{data} );
         }
     }
 }
+
+=back
+
+=head1 AUTHOR
+
+Christian Hansen, C<ch@ngmedia.com>
+
+=head1 LICENSE
+
+This library is free software . You can redistribute it and/or modify 
+it under the same terms as perl itself.
+
+=cut
 
 1;

@@ -3,29 +3,21 @@
 use strict;
 use warnings;
 
-use Test::More;
-
-eval { require YAML; import YAML 'LoadFile'; };
-if ($@) {
-  eval { require YAML::Syck; import YAML::Syck 'LoadFile'; }
-}
-
-plan skip_all => 'Tests need YAML or YAML::Syck' if $@;
-
-plan tests => 55;
+use Test::More tests => 55;
 
 use Cwd;
 use HTTP::Body;
 use File::Spec::Functions;
 use IO::File;
+use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 
 for ( my $i = 1; $i <= 11; $i++ ) {
 
     my $test    = sprintf( "%.3d", $i );
-    my $headers = LoadFile( catfile( $path, "$test-headers.yml" ) );
-    my $results = LoadFile( catfile( $path, "$test-results.yml" ) );
+    my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
+    my $results = YAML::LoadFile( catfile( $path, "$test-results.yml" ) );
     my $content = IO::File->new( catfile( $path, "$test-content.dat" ) );
     my $body    = HTTP::Body->new( $headers->{'Content-Type'}, $headers->{'Content-Length'} );
 
