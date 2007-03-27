@@ -89,7 +89,7 @@ sub boundary_end {
 
 =cut
 
-sub crlf {
+sub crlf () {
     return "\x0d\x0a";
 }
 
@@ -257,45 +257,42 @@ sub parse_body {
 sub handler {
     my ( $self, $part ) = @_;
 
-    my $disposition = $part->{headers}->{'Content-Disposition'};
-    my ($name)     = $disposition =~ / name="?([^\";]+)"?/;
-    my ($filename) = $disposition =~ / filename="?([^\"]+)"?/;
-
-    # skip parts without content
-    if ( $part->{done} && $part->{size} == 0 && !$filename) {
-        return 0;
-    }
-
     unless ( exists $part->{name} ) {
 
+        my $disposition = $part->{headers}->{'Content-Disposition'};
+        my ($name)      = $disposition =~ / name="?([^\";]+)"?/;
+        my ($filename)  = $disposition =~ / filename="?([^\"]*)"?/;
+        # Need to match empty filenames above, so this part is flagged as an upload type
 
-        $part->{name}     = $name;
-        $part->{filename} = $filename;
+        $part->{name} = $name;
 
-        if ($filename) {
+        if ( defined $filename ) {
+            $part->{filename} = $filename;
 
-            my $fh = File::Temp->new( UNLINK => 0 );
+            if ( $filename ne "" ) {
+                my $fh = File::Temp->new( UNLINK => 0 );
 
-            $part->{fh}       = $fh;
-            $part->{tempname} = $fh->filename;
+                $part->{fh}       = $fh;
+                $part->{tempname} = $fh->filename;
+	        }
         }
     }
 
-    if ( $part->{filename} && ( my $length = length( $part->{data} ) ) ) {
+    if ( $part->{fh} && ( my $length = length( $part->{data} ) ) ) {
         $part->{fh}->write( substr( $part->{data}, 0, $length, '' ), $length );
     }
 
     if ( $part->{done} ) {
 
-        if ( $part->{filename} ) {
+        if ( exists $part->{filename} ) {
+	        if ( $part->{filename} ne "" ) {
+                $part->{fh}->close;
 
-            $part->{fh}->close;
+                delete @{$part}{qw[ data done fh ]};
 
-            delete @{$part}{qw[ data done fh ]};
-
-            $self->upload( $part->{name}, $part );
+                $self->upload( $part->{name}, $part );
+            }
         }
-
         else {
             $self->param( $part->{name}, $part->{data} );
         }
