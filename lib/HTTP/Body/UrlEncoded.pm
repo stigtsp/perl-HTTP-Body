@@ -8,11 +8,9 @@ our $DECODE = qr/%([0-9a-fA-F]{2})/;
 
 our %hex_chr;
 
-BEGIN {
-    for my $num ( 0 .. 255 ) {
-        my $h = sprintf "%02X", $num;
-        $hex_chr{ lc $h } = $hex_chr{ uc $h } = chr $num;
-    }
+for my $num ( 0 .. 255 ) {
+    my $h = sprintf "%02X", $num;
+    $hex_chr{ lc $h } = $hex_chr{ uc $h } = chr $num;
 }
 
 =head1 NAME
@@ -40,7 +38,12 @@ sub spin {
 
     return unless $self->length == $self->content_length;
     
-    $self->{buffer} =~ tr/+/ /;
+    # I tested parsing this using APR::Request, but perl is faster
+    # Pure-Perl    2560/s
+    # APR::Request 2305/s
+    
+    # Note: s/// appears faster than tr///
+    $self->{buffer} =~ s/\+/ /g;
 
     for my $pair ( split( /[&;]/, $self->{buffer} ) ) {
 
@@ -61,9 +64,11 @@ sub spin {
 
 =back
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Christian Hansen, C<ch@ngmedia.com>
+
+Andy Grundman, C<andy@hybridized.org>
 
 =head1 LICENSE
 
