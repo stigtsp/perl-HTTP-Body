@@ -169,7 +169,7 @@ sub content_length {
 
 =item content_type
 
-ready only accessor for the content type
+read only accessor for the content type
 
 =cut
 
