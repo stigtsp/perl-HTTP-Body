@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.01    2008-02-23 11:30:00
+        - Fixed performance issue with urlencoded regex.
+
 1.00    2008-02-23 11:00:00
         - Added support for chunked requests if no $length value is passed to new().
         - Added support for XForms submissions. (Daniel Ruoso)

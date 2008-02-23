@@ -45,7 +45,7 @@ sub spin {
     # Note: s/// appears faster than tr///
     $self->{buffer} =~ s/\+/ /g;
 
-    for my $pair ( split( /&|;(?:\s+)?/, $self->{buffer} ) ) {
+    for my $pair ( split( /[&;](?:\s+)?/, $self->{buffer} ) ) {
 
         my ( $name, $value ) = split( /=/, $pair , 2 );
 
