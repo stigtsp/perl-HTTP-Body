@@ -60,6 +60,12 @@ Chunked bodies are supported by not passing a length value to new().
 
 It is currently used by L<Catalyst> to parse POST bodies.
 
+=head1 NOTES
+
+When parsing multipart bodies, temporary files are created to store any
+uploaded files.  You must delete these temporary files yourself after
+processing them.
+
 =head1 METHODS
 
 =over 4 

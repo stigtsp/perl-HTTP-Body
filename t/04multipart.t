@@ -27,12 +27,15 @@ for ( my $i = 1; $i <= 12; $i++ ) {
         $body->add($buffer);
     }
     
+    # Save tempnames for later deletion
+    my @temps;
+    
     for my $field ( keys %{ $body->upload } ) {
 
         my $value = $body->upload->{$field};
 
         for ( ( ref($value) eq 'ARRAY' ) ? @{$value} : $value ) {
-            delete $_->{tempname};
+            push @temps, delete $_->{tempname};
         }
     }
 
@@ -41,4 +44,7 @@ for ( my $i = 1; $i <= 12; $i++ ) {
     is_deeply( $body->upload, $results->{upload}, "$test MultiPart upload" );
     cmp_ok( $body->state, 'eq', 'done', "$test MultiPart state" );
     cmp_ok( $body->length, '==', $body->content_length, "$test MultiPart length" );
+    
+    # Clean up temp files created
+    unlink map { $_ } grep { -e $_ } @temps;
 }
