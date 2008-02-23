@@ -24,8 +24,10 @@
 \#$
 \b\.#
 
-# dev scripts
+# No tarballs!
+\.gz$
 
+# dev scripts
 scripts/benchmark.pl
 scripts/stress.pl
 t/data/benchmark/*
