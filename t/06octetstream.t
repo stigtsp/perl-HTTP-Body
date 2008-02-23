@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 12;
 
 use Cwd;
 use HTTP::Body;
@@ -11,7 +11,7 @@ use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'octetstream' );
 
-for ( my $i = 1 ; $i <= 2 ; $i++ ) {
+for ( my $i = 1 ; $i <= 3 ; $i++ ) {
 
     my $test = sprintf( "%.3d", $i );
     my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
@@ -33,7 +33,7 @@ for ( my $i = 1 ; $i <= 2 ; $i++ ) {
     cmp_ok( $body->state, 'eq', 'done', "$test UrlEncoded state" );
     cmp_ok(
         $body->length, '==',
-        $headers->{'Content-Length'},
+        $body->content_length,
         "$test UrlEncoded length"
     );
 }

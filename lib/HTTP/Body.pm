@@ -4,7 +4,7 @@ use strict;
 
 use Carp       qw[ ];
 
-our $VERSION = 0.91;
+our $VERSION = 1.00;
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
@@ -15,6 +15,9 @@ our $TYPES = {
 require HTTP::Body::OctetStream;
 require HTTP::Body::UrlEncoded;
 require HTTP::Body::MultiPart;
+
+use HTTP::Headers;
+use HTTP::Message;
 
 =head1 NAME
 
@@ -53,6 +56,8 @@ HTTP::Body parses chunks of HTTP POST data and supports
 application/octet-stream, application/x-www-form-urlencoded, and
 multipart/form-data.
 
+Chunked bodies are supported by not passing a length value to new().
+
 It is currently used by L<Catalyst> to parse POST bodies.
 
 =head1 METHODS
@@ -69,8 +74,8 @@ returns a L<HTTP::Body> object.
 sub new {
     my ( $class, $content_type, $content_length ) = @_;
 
-    unless ( @_ == 3 ) {
-        Carp::croak( $class, '->new( $content_type, $content_length )' );
+    unless ( @_ >= 2 ) {
+        Carp::croak( $class, '->new( $content_type, [ $content_length ] )' );
     }
 
     my $type;
@@ -90,8 +95,10 @@ sub new {
 
     my $self = {
         buffer         => '',
+        chunk_buffer   => '',
         body           => undef,
-        content_length => $content_length,
+        chunked        => !defined $content_length,
+        content_length => defined $content_length ? $content_length : -1,
         content_type   => $content_type,
         length         => 0,
         param          => {},
@@ -113,6 +120,57 @@ length before adding self.
 
 sub add {
     my $self = shift;
+    
+    if ( $self->{chunked} ) {
+        $self->{chunk_buffer} .= $_[0];
+        
+        while ( $self->{chunk_buffer} =~ m/^([\da-fA-F]+).*\x0D\x0A/ ) {
+            my $chunk_len = hex($1);
+            
+            if ( $chunk_len == 0 ) {
+                # Strip chunk len
+                $self->{chunk_buffer} =~ s/^([\da-fA-F]+).*\x0D\x0A//;
+                
+                # End of data, there may be trailing headers
+                if (  my ($headers) = $self->{chunk_buffer} =~ m/(.*)\x0D\x0A/s ) {
+                    if ( my $message = HTTP::Message->parse( $headers ) ) {
+                        $self->{trailing_headers} = $message->headers;
+                    }
+                }
+                
+                $self->{chunk_buffer} = '';
+                
+                # Set content_length equal to the amount of data we read,
+                # so the spin methods can finish up.
+                $self->{content_length} = $self->{length};
+            }
+            else {
+                # Make sure we have the whole chunk in the buffer (+CRLF)
+                if ( length( $self->{chunk_buffer} ) >= $chunk_len ) {
+                    # Strip chunk len
+                    $self->{chunk_buffer} =~ s/^([\da-fA-F]+).*\x0D\x0A//;
+                    
+                    # Pull chunk data out of chunk buffer into real buffer
+                    $self->{buffer} .= substr $self->{chunk_buffer}, 0, $chunk_len, '';
+                
+                    # Strip remaining CRLF
+                    $self->{chunk_buffer} =~ s/^\x0D\x0A//;
+                
+                    $self->{length} += $chunk_len;
+                }
+                else {
+                    # Not enough data for this chunk, wait for more calls to add()
+                    return;
+                }
+            }
+            
+            unless ( $self->{state} eq 'done' ) {
+                $self->spin;
+            }
+        }
+        
+        return;
+    }
     
     my $cl = $self->content_length;
 
@@ -147,19 +205,20 @@ sub body {
     return $self->{body};
 }
 
-=item buffer
+=item chunked
 
-read only accessor for the buffer.
+Returns 1 if the request is chunked.
 
 =cut
 
-sub buffer {
-    return shift->{buffer};
+sub chunked {
+    return shift->{chunked};
 }
 
 =item content_length
 
-read only accessor for content length
+Returns the content-length for the body data if known.
+Returns -1 if the request is chunked.
 
 =cut
 
@@ -169,7 +228,7 @@ sub content_length {
 
 =item content_type
 
-read only accessor for the content type
+Returns the content-type of the body data.
 
 =cut
 
@@ -189,12 +248,25 @@ sub init {
 
 =item length
 
-read only accessor for body length.
+Returns the total length of data we expect to read if known.
+In the case of a chunked request, returns the amount of data
+read so far.
 
 =cut
 
 sub length {
     return shift->{length};
+}
+
+=item trailing_headers
+
+If a chunked request body had trailing headers, trailing_headers will
+return an HTTP::Headers object populated with those headers.
+
+=cut
+
+sub trailing_headers {
+    return shift->{trailing_headers};
 }
 
 =item spin
@@ -209,7 +281,7 @@ sub spin {
 
 =item state
 
-accessor for body state.
+Returns the current state of the parser.
 
 =cut
 
@@ -221,7 +293,7 @@ sub state {
 
 =item param
 
-accesor for http parameters.
+Get/set body parameters.
 
 =cut
 
@@ -248,6 +320,8 @@ sub param {
 
 =item upload
 
+Get/set file uploads.
+
 =cut
 
 sub upload {
@@ -273,15 +347,13 @@ sub upload {
 
 =back
 
-=head1 BUGS
-
-Chunked requests are currently not supported.
-
 =head1 AUTHOR
 
 Christian Hansen, C<ch@ngmedia.com>
 
 Sebastian Riedel, C<sri@cpan.org>
+
+Andy Grundman, C<andy@hybridized.org>
 
 =head1 LICENSE
 

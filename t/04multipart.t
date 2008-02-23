@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 55;
+use Test::More tests => 60;
 
 use Cwd;
 use HTTP::Body;
@@ -13,7 +13,7 @@ use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 
-for ( my $i = 1; $i <= 11; $i++ ) {
+for ( my $i = 1; $i <= 12; $i++ ) {
 
     my $test    = sprintf( "%.3d", $i );
     my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
@@ -40,5 +40,5 @@ for ( my $i = 1; $i <= 11; $i++ ) {
     is_deeply( $body->param, $results->{param}, "$test MultiPart param" );
     is_deeply( $body->upload, $results->{upload}, "$test MultiPart upload" );
     cmp_ok( $body->state, 'eq', 'done', "$test MultiPart state" );
-    cmp_ok( $body->length, '==', $headers->{'Content-Length'}, "$test MultiPart length" );
+    cmp_ok( $body->length, '==', $body->content_length, "$test MultiPart length" );
 }
