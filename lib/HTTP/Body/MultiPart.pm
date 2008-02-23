@@ -286,7 +286,7 @@ sub handler {
 
         if ( exists $part->{filename} ) {
             if ( $part->{filename} ne "" ) {
-                $part->{fh}->close;
+                $part->{fh}->close if defined $part->{fh};
 
                 delete @{$part}{qw[ data done fh ]};
 

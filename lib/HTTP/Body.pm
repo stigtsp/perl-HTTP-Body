@@ -9,12 +9,16 @@ our $VERSION = 1.00;
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
     'application/x-www-form-urlencoded' => 'HTTP::Body::UrlEncoded',
-    'multipart/form-data'               => 'HTTP::Body::MultiPart'
+    'multipart/form-data'               => 'HTTP::Body::MultiPart',
+    'multipart/related'                 => 'HTTP::Body::XFormsMultipart',
+    'application/xml'                   => 'HTTP::Body::XForms'
 };
 
 require HTTP::Body::OctetStream;
 require HTTP::Body::UrlEncoded;
 require HTTP::Body::MultiPart;
+require HTTP::Body::XFormsMultipart;
+require HTTP::Body::XForms;
 
 use HTTP::Headers;
 use HTTP::Message;

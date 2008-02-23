@@ -1,0 +1,18 @@
+---
+body: ~
+start: asdfg@asdfg.com
+param:
+  XForms:Model: <model><data1>asdfg</data1><data2>asdfg</data2></model>
+upload:
+  qwert@qwerty.com:
+    filename: qwert@qwerty.com
+    headers:
+      Content-ID: <qwert@qwerty.com>
+    name: qwert@qwerty.com
+    size: 17
+  zxcvb@zxcvb.com:
+    filename: zxcvb@zxcvb.com
+    headers:
+      Content-ID: <zxcvb@zxcvb.com>
+    name: zxcvb@zxcvb.com
+    size: 17

@@ -2,6 +2,7 @@ This file documents the revision history for Perl extension HTTP::Body.
 
 1.00
         - Added support for chunked requests if no $length value is passed to new().
+        - Added support for XForms submissions. (Daniel Ruoso)
         - Fixed urlencoded parser to handle spaces after semicolons and equal signs
           in the value. (Tom Heady, http://rt.cpan.org/Ticket/Display.html?id=31055)
         - Fixed multipart test to properly clean up temporary files.
