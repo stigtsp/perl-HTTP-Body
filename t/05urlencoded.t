@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 31;
 
 use Cwd;
 use Digest::MD5 qw(md5_hex);
@@ -14,7 +14,7 @@ use YAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'urlencoded' );
 
-for ( my $i = 1; $i <= 3; $i++ ) {
+for ( my $i = 1; $i <= 6; $i++ ) {
 
     my $test    = sprintf( "%.3d", $i );
     my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
