@@ -37,6 +37,7 @@ for ( my $i = 1; $i <= 6; $i++ ) {
     # Check trailing header on the chunked request
     if ( $i == 3 ) {
         my $content = IO::File->new( catfile( $path, "002-content.dat" ) );
+        binmode $content;
         $content->read( my $buf, 4096 );
         is( $body->trailing_headers->header('Content-MD5'), md5_hex($buf), "$test trailing header ok" );
     }

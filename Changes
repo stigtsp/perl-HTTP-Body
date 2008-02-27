@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.02    2008-02-27 17:30:00
+        - Fixed issue with urlencoded test on Windows.
+
 1.01    2008-02-23 11:30:00
         - Fixed performance issue with urlencoded regex.
 
