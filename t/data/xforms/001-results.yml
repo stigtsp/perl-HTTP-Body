@@ -1,5 +1,5 @@
 ---
-body: ~
+body: <model><data1>asdfg</data1><data2>asdfg</data2></model>
 start: asdfg@asdfg.com
 param:
   XForms:Model: <model><data1>asdfg</data1><data2>asdfg</data2></model>

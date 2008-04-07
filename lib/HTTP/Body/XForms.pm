@@ -34,12 +34,12 @@ the buffer content.
 
 sub spin {
     my $self = shift;
-    
+
+    $self->body($self->{buffer});
     $self->param( 'XForms:Model', $self->{buffer} );
-    
     $self->{buffer} = '';
     $self->{state}  = 'done';
-    
+
     return $self->SUPER::init();
 }
 

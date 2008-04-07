@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.03    2008-04-07 08:20:00
+        - Set body value for XForms data. (Daniel Ruoso)
+
 1.02    2008-02-27 17:30:00
         - Fixed issue with urlencoded test on Windows.
 

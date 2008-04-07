@@ -74,6 +74,9 @@ sub handler {
     
     if ( $contentid eq $self->start ) {
         $part->{name} = 'XForms:Model';
+        if ($part->{done}) {
+            $self->body($part->{data});
+        }
     }
     elsif ( defined $contentid ) {
         $part->{name}     = $contentid;
