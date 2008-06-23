@@ -270,7 +270,7 @@ sub handler {
             $part->{filename} = $filename;
 
             if ( $filename ne "" ) {
-                my $fh = File::Temp->new( UNLINK => 0 );
+                my $fh = File::Temp->new( UNLINK => 0, DIR => $self->tmpdir );
 
                 $part->{fh}       = $fh;
                 $part->{tempname} = $fh->filename;

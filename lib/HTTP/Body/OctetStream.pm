@@ -30,7 +30,7 @@ sub spin {
     my $self = shift;
 
     unless ( $self->body ) {
-        $self->body( File::Temp->new );
+        $self->body( File::Temp->new( DIR => $self->tmpdir ) );
     }
 
     if ( my $length = length( $self->{buffer} ) ) {

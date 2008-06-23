@@ -1,5 +1,9 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.04    2008-06-23 16:00:00
+        - Added tmpdir() accessor to specify an alternate directory for temp files.
+          (jgoulah)
+
 1.03    2008-04-07 08:20:00
         - Set body value for XForms data. (Daniel Ruoso)
 

@@ -4,7 +4,7 @@ use strict;
 
 use Carp       qw[ ];
 
-our $VERSION = '1.03';
+our $VERSION = '1.04';
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
@@ -113,7 +113,8 @@ sub new {
         length         => 0,
         param          => {},
         state          => 'buffering',
-        upload         => {}
+        upload         => {},
+        tmpdir         => File::Spec->tmpdir(),
     };
 
     bless( $self, $body );
@@ -353,6 +354,18 @@ sub upload {
     }
 
     return $self->{upload};
+}
+
+=item tmpdir 
+
+Specify a different path for temporary files.  Defaults to the system temporary path.
+
+=cut
+
+sub tmpdir {
+    my $self = shift;
+    $self->{tmpdir} = shift if @_;
+    return $self->{tmpdir};
 }
 
 =back

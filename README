@@ -84,6 +84,10 @@ METHODS
     upload
         Get/set file uploads.
 
+    tmpdir
+        Specify a different path for temporary files. Defaults to the system
+        temporary path.
+
 AUTHOR
     Christian Hansen, "ch@ngmedia.com"
 

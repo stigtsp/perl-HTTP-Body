@@ -3,13 +3,14 @@
 use strict;
 use warnings;
 
-use Test::More tests => 60;
+use Test::More tests => 98;
 
 use Cwd;
 use HTTP::Body;
 use File::Spec::Functions;
 use IO::File;
 use YAML;
+use File::Temp qw/ tempdir /;
 
 my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 
@@ -20,6 +21,10 @@ for ( my $i = 1; $i <= 12; $i++ ) {
     my $results = YAML::LoadFile( catfile( $path, "$test-results.yml" ) );
     my $content = IO::File->new( catfile( $path, "$test-content.dat" ) );
     my $body    = HTTP::Body->new( $headers->{'Content-Type'}, $headers->{'Content-Length'} );
+    my $tempdir = tempdir( 'XXXXXXX', CLEANUP => 1, DIR => File::Spec->tmpdir() );
+    $body->tmpdir($tempdir);
+
+    my $regex_tempdir = quotemeta($tempdir);
 
     binmode $content, ':raw';
 
@@ -35,6 +40,7 @@ for ( my $i = 1; $i <= 12; $i++ ) {
         my $value = $body->upload->{$field};
 
         for ( ( ref($value) eq 'ARRAY' ) ? @{$value} : $value ) {
+            like($_->{tempname}, qr{$regex_tempdir}, "has tmpdir $tempdir");
             push @temps, delete $_->{tempname};
         }
     }
