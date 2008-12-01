@@ -4,7 +4,7 @@ use strict;
 
 use Carp       qw[ ];
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
@@ -96,12 +96,6 @@ sub new {
     }
 
     my $body = $TYPES->{ $type || 'application/octet-stream' };
-
-    eval "require $body";
-
-    if ($@) {
-        die $@;
-    }
 
     my $self = {
         buffer         => '',
