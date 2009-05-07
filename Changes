@@ -1,6 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
 1.06    
+        - Added $body->cleanup(1) flag to enable auto-deletion of temporary files
+          during DESTROY. (Vany Serezhkin)
         - Fixed parsing of multipart bodies with boundaries that contain commas.
           (Tomas Doran, http://rt.cpan.org/Public/Bug/Display.html?id=41407)
 

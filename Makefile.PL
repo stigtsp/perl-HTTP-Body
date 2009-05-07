@@ -10,6 +10,7 @@ WriteMakefile(
         File::Temp    => '0.14',
         HTTP::Headers => 0, 
         IO::File      => 0,
+        Test::Deep    => 0,
         YAML          => '0.39'
     }
 );
