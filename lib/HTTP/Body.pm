@@ -4,7 +4,7 @@ use strict;
 
 use Carp       qw[ ];
 
-our $VERSION = '1.05';
+our $VERSION = '1.06';
 
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
