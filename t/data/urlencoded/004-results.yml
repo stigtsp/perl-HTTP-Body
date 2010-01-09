@@ -1,6 +1,0 @@
----
-body: ~
-param:
-  one: foo
-  two: bar
-upload: {}

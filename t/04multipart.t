@@ -3,6 +3,9 @@
 use strict;
 use warnings;
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
+
 use Test::More tests => 140;
 use Test::Deep;
 
@@ -10,7 +13,7 @@ use Cwd;
 use HTTP::Body;
 use File::Spec::Functions;
 use IO::File;
-use YAML;
+use PAML;
 use File::Temp qw/ tempdir /;
 
 my $path = catdir( getcwd(), 't', 'data', 'multipart' );
@@ -18,8 +21,8 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 for ( my $i = 1; $i <= 13; $i++ ) {
 
     my $test    = sprintf( "%.3d", $i );
-    my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
-    my $results = YAML::LoadFile( catfile( $path, "$test-results.yml" ) );
+    my $headers = PAML::LoadFile( catfile( $path, "$test-headers.pml" ) );
+    my $results = PAML::LoadFile( catfile( $path, "$test-results.pml" ) );
     my $content = IO::File->new( catfile( $path, "$test-content.dat" ) );
     my $body    = HTTP::Body->new( $headers->{'Content-Type'}, $headers->{'Content-Length'} );
     my $tempdir = tempdir( 'XXXXXXX', CLEANUP => 1, DIR => File::Spec->tmpdir() );

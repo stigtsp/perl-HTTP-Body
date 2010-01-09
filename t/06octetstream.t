@@ -1,20 +1,23 @@
 use strict;
 use warnings;
 
+use FindBin;
+use lib "$FindBin::Bin/lib";
+
 use Test::More tests => 12;
 
 use Cwd;
 use HTTP::Body;
 use File::Spec::Functions;
 use IO::File;
-use YAML;
+use PAML;
 
 my $path = catdir( getcwd(), 't', 'data', 'octetstream' );
 
 for ( my $i = 1 ; $i <= 3 ; $i++ ) {
 
     my $test = sprintf( "%.3d", $i );
-    my $headers = YAML::LoadFile( catfile( $path, "$test-headers.yml" ) );
+    my $headers = PAML::LoadFile( catfile( $path, "$test-headers.pml" ) );
     my $results =
       slurp_fh( IO::File->new( catfile( $path, "$test-results.dat" ) ) );
     my $content = IO::File->new( catfile( $path, "$test-content.dat" ) );

@@ -7,6 +7,7 @@ BEGIN {
 use strict;
 use warnings;
 use lib "$FindBin::Bin/../lib";
+use lib "$FindBin::Bin/../t/lib";
 
 use Benchmark   qw[cmpthese timethese];
 use CGI         qw[];
@@ -14,7 +15,7 @@ use CGI::Simple qw[];
 use HTTP::Body  qw[];
 use IO::Handle  qw[];
 use IO::File    qw[O_RDONLY SEEK_SET];
-use YAML        qw[LoadFile];
+use PAML        qw[LoadFile];
 
 my ( $headers, $content, $message );
 
@@ -97,7 +98,7 @@ my @benchmarks =  @ARGV ? @ARGV : qw[ t/data/benchmark/001
 
 foreach my $benchmark ( @benchmarks ) {
 
-    $headers  = LoadFile("$FindBin::Bin/../$benchmark-headers.yml");
+    $headers  = LoadFile("$FindBin::Bin/../$benchmark-headers.pml");
     $content  = IO::File->new( "$FindBin::Bin/../$benchmark-content.dat", O_RDONLY )
       or die $!;
 

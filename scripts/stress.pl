@@ -7,13 +7,14 @@ BEGIN {
 use strict;
 use warnings;
 use lib "$FindBin::Bin/../lib";
+use lib "$FindBin::Bin/../t/lib";
 
 use Benchmark   qw[timethese];
 use HTTP::Body  qw[];
 use IO::File    qw[O_RDONLY];
-use YAML        qw[LoadFile Dump];
+use PAML        qw[LoadFile];
 
-my $headers = LoadFile("t/data/multipart/003-headers.yml");
+my $headers = LoadFile("t/data/multipart/003-headers.pml");
 
 my $run = sub {
       my $bsize   = shift;
