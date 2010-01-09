@@ -1,15 +1,16 @@
 #!perl
 
-use ExtUtils::MakeMaker;
+use inc::Module::Install;
 
-WriteMakefile(
-    NAME         => 'HTTP::Body',
-    VERSION_FROM => 'lib/HTTP/Body.pm',
-    PREREQ_PM    => {
-        Carp          => 0,
-        File::Temp    => '0.14',
-        HTTP::Headers => 0, 
-        IO::File      => 0,
-        Test::Deep    => 0,
-    }
-);
+name 'HTTP-Body';
+all_from 'lib/HTTP/Body.pm';
+
+requires 'Carp';
+requires 'File::Temp' => '0.14';
+requires 'HTTP::Headers';
+requires 'IO::File';
+
+test_requires 'Test::More' => '0.86';
+test_requires 'Test::Deep';
+
+WriteAll;

@@ -394,7 +394,7 @@ sub tmpdir {
 
 =head1 AUTHOR
 
-Christian Hansen, C<ch@ngmedia.com>
+Christian Hansen, C<chansen@cpan.org>
 
 Sebastian Riedel, C<sri@cpan.org>
 
