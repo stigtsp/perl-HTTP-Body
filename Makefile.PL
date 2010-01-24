@@ -9,7 +9,6 @@ requires 'Carp';
 requires 'File::Temp' => '0.14';
 requires 'HTTP::Headers';
 requires 'IO::File' => '1.14';
-requires 'URI';
 
 test_requires 'Test::More' => '0.86';
 test_requires 'Test::Deep';
