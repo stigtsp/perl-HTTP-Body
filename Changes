@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.07    2010-01-24 20:40:00
+        - Up IO::File dependency.
+
 1.06    2010-01-09 19:21:00
         - Added $body->cleanup(1) flag to enable auto-deletion of temporary files
           during DESTROY. (Vany Serezhkin)
