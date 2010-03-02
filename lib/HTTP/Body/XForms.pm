@@ -35,6 +35,8 @@ the buffer content.
 sub spin {
     my $self = shift;
 
+    return unless $self->length == $self->content_length;
+
     $self->body($self->{buffer});
     $self->param( 'XForms:Model', $self->{buffer} );
     $self->{buffer} = '';
