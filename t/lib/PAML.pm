@@ -50,7 +50,7 @@ sub LoadFile ($) {
     my $data = do {
 
         my $io = IO::File->new($path, '<')
-          || corak(qq[Couldn't open path '$path' in read mode: $!]);
+          || croak(qq[Couldn't open path '$path' in read mode: $!]);
 
         $io->binmode
           || croak(qq[Couldn't binmode filehandle: $!]);

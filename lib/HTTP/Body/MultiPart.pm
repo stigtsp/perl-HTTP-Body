@@ -270,7 +270,9 @@ sub handler {
             $part->{filename} = $filename;
 
             if ( $filename ne "" ) {
-                my $fh = File::Temp->new( UNLINK => 0, DIR => $self->tmpdir );
+                my $suffix = $filename =~ /[^.]+(\..+)$/ ? $1 : q{};
+
+                my $fh = File::Temp->new( UNLINK => 0, DIR => $self->tmpdir, SUFFIX => $suffix );
 
                 $part->{fh}       = $fh;
                 $part->{tempname} = $fh->filename;

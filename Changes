@@ -1,5 +1,11 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.08
+        - Temp files now preserve the suffix of the uploaded file. This makes
+          it possible to feed the file directly into a mime-type-determing
+          module that may rely on this suffix as part of its heuristic. (Dave
+          Rolsky)
+
 1.07    2010-01-24 20:40:00
         - Up IO::File dependency.
 
