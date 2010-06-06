@@ -6,7 +6,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use Test::More tests => 4;
+use Test::More tests => 6;
 use Test::Deep;
 
 use Cwd;
@@ -47,6 +47,16 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
     like(
         $uploads->{upload}{tempname}, qr/\.foo\.txt$/,
         'tempname preserves .foo.txt suffix'
+    );
+
+    like(
+        $uploads->{upload2}{tempname}, qr/\.txt$/,
+        'tempname preserves .txt suffix when dir name has .'
+    );
+
+    unlike(
+        $uploads->{upload2}{tempname}, qr/\\/,
+        'tempname only gets extension from filename, not from a directory name'
     );
 }
 
