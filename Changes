@@ -5,6 +5,8 @@ This file documents the revision history for Perl extension HTTP::Body.
           it possible to feed the file directly into a mime-type-determing
           module that may rely on this suffix as part of its heuristic. (Dave
           Rolsky)
+        - Fix for RT#54443 Xforms buffering incorrectly (Simon Elliott)
+        - Move to Dist::Zilla
 
 1.07    2010-01-24 20:40:00
         - Up IO::File dependency.

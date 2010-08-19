@@ -4,8 +4,6 @@ use strict;
 
 use Carp       qw[ ];
 
-our $VERSION = '1.07';
-
 our $TYPES = {
     'application/octet-stream'          => 'HTTP::Body::OctetStream',
     'application/x-www-form-urlencoded' => 'HTTP::Body::UrlEncoded',
