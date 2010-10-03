@@ -2,7 +2,7 @@ This file documents the revision history for Perl extension HTTP::Body.
 
 1.08
         - Temp files now preserve the suffix of the uploaded file. This makes
-          it possible to feed the file directly into a mime-type-determing
+          it possible to feed the file directly into a mime-type-determining
           module that may rely on this suffix as part of its heuristic. (Dave
           Rolsky)
         - Fix for RT#54443 Xforms buffering incorrectly (Simon Elliott)
