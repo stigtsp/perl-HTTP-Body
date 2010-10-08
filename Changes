@@ -1,6 +1,12 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
-1.08
+1.10    Fri 8 Oct 2010 15:50:55 UTC
+        - Patch for test failure ( thanks KENTNL/MITHALDU! )
+
+1.09    Thu 19 Aug 2010 19:08:55 UTC
+        - remove blib for PAUSE indexing.
+
+1.08    Thu 19 Aug 2010 18:08:42 UTC
         - Temp files now preserve the suffix of the uploaded file. This makes
           it possible to feed the file directly into a mime-type-determining
           module that may rely on this suffix as part of its heuristic. (Dave

@@ -390,6 +390,20 @@ sub tmpdir {
 
 =back
 
+=head1 SUPPORT
+
+Since its original creation this module has been taken over by the Catalyst
+development team. If you want to contribute patches, these will be your
+primary contact points:
+
+IRC:
+
+    Join #catalyst-dev on irc.perl.org.
+
+Mailing Lists:
+
+    http://lists.scsys.co.uk/cgi-bin/mailman/listinfo/catalyst-dev
+
 =head1 AUTHOR
 
 Christian Hansen, C<chansen@cpan.org>
@@ -397,6 +411,14 @@ Christian Hansen, C<chansen@cpan.org>
 Sebastian Riedel, C<sri@cpan.org>
 
 Andy Grundman, C<andy@hybridized.org>
+
+=head1 CONTRIBUTORS
+
+Simon Elliott C<cpan@papercreatures.com>
+
+Kent Fredric <kentnl@cpan.org>
+
+Christian Walde
 
 =head1 LICENSE
 
