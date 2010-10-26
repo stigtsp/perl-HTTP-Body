@@ -8,5 +8,8 @@
       "A",
       "B"
     ]
-  }
+  },
+  "param_order" => [
+    "text1", "text2", "select", "select", "textarea"
+  ]
 }

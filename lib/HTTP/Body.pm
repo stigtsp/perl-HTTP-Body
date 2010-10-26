@@ -47,9 +47,10 @@ HTTP::Body - HTTP Body Parser
             $body->add($buffer);
         }
         
-        my $uploads = $body->upload; # hashref
-        my $params  = $body->param;  # hashref
-        my $body    = $body->body;   # IO::Handle
+        my $uploads     = $body->upload;     # hashref
+        my $params      = $body->param;      # hashref
+        my $param_order = $body->param_order # arrayref
+        my $body        = $body->body;       # IO::Handle
     }
 
 =head1 DESCRIPTION
@@ -106,6 +107,7 @@ sub new {
         content_type   => $content_type,
         length         => 0,
         param          => {},
+        param_order    => [],
         state          => 'buffering',
         upload         => {},
         tmpdir         => File::Spec->tmpdir(),
@@ -344,6 +346,8 @@ sub param {
         else {
             $self->{param}->{$name} = $value;
         }
+
+        push @{$self->{param_order}}, $name;
     }
 
     return $self->{param};
@@ -388,6 +392,16 @@ sub tmpdir {
     return $self->{tmpdir};
 }
 
+=item param_order
+
+Returns the array ref of the param keys in the order how they appeared on the body
+
+=cut
+
+sub param_order {
+    return shift->{param_order};
+}
+
 =back
 
 =head1 SUPPORT
@@ -419,6 +433,8 @@ Simon Elliott C<cpan@papercreatures.com>
 Kent Fredric <kentnl@cpan.org>
 
 Christian Walde
+
+Torsten Raudssus <torsten@raudssus.de>
 
 =head1 LICENSE
 

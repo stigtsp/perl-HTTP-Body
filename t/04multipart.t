@@ -6,7 +6,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use Test::More tests => 140;
+use Test::More tests => 153;
 use Test::Deep;
 
 use Cwd;
@@ -63,9 +63,10 @@ for ( my $i = 1; $i <= 13; $i++ ) {
             $results->{upload}->{$field}->{tempname} = ignore();
         }
     }
-
+	
     cmp_deeply( $body->body, $results->{body}, "$test MultiPart body" );
     cmp_deeply( $body->param, $results->{param}, "$test MultiPart param" );
+    cmp_deeply( $body->param_order, $results->{param_order} ? $results->{param_order} : [], "$test MultiPart param_order" );
     cmp_deeply( $body->upload, $results->{upload}, "$test MultiPart upload" )
         if $results->{upload};
     cmp_ok( $body->state, 'eq', 'done', "$test MultiPart state" );
@@ -82,4 +83,5 @@ for ( my $i = 1; $i <= 13; $i++ ) {
     for my $temp ( @temps ) {
         ok( !-e $temp, "Temp file $temp was deleted" );
     }
+
 } 

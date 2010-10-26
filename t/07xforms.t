@@ -6,7 +6,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use Test::More tests => 12;
+use Test::More tests => 14;
 
 use Cwd;
 use HTTP::Body;
@@ -44,6 +44,7 @@ for ( my $i = 1; $i <= 2; $i++ ) {
 
     is_deeply( $body->body, $results->{body}, "$test XForms body" );
     is_deeply( $body->param, $results->{param}, "$test XForms param" );
+	is_deeply( $body->param_order, $results->{param_order} ? $results->{param_order} : [], "$test XForms param_order" );
     is_deeply( $body->upload, $results->{upload}, "$test XForms upload" );
     if ( $body->isa('HTTP::Body::XFormsMultipart') ) {
         cmp_ok( $body->start, 'eq', $results->{start}, "$test XForms start" );

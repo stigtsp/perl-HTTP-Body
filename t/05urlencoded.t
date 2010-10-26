@@ -6,7 +6,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use Test::More tests => 31;
+use Test::More tests => 37;
 
 use Cwd;
 use Digest::MD5 qw(md5_hex);
@@ -33,6 +33,7 @@ for ( my $i = 1; $i <= 6; $i++ ) {
 
     is_deeply( $body->body, $results->{body}, "$test UrlEncoded body" );
     is_deeply( $body->param, $results->{param}, "$test UrlEncoded param" );
+	is_deeply( $body->param_order, $results->{param_order} ? $results->{param_order} : [], "$test UrlEncoded param_order" );
     is_deeply( $body->upload, $results->{upload}, "$test UrlEncoded upload" );
     cmp_ok( $body->state, 'eq', 'done', "$test UrlEncoded state" );
     cmp_ok( $body->length, '==', $body->content_length, "$test UrlEncoded length" );

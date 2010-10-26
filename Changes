@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.11    Tue 26 Oct 2010 14:10:00 UTC
+        - Added param_order capability (Torsten Raudssus [GETTY])
+
 1.10    Fri 8 Oct 2010 15:50:55 UTC
         - Patch for test failure ( thanks KENTNL/MITHALDU! )
 

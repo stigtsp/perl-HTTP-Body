@@ -4,5 +4,8 @@
   "param" => {
     "one" => "foo",
     "two" => "bar"
-  }
+  },
+  "param_order" => [
+    "one", "two"
+  ],
 }
