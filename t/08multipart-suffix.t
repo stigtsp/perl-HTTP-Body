@@ -21,43 +21,61 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 {
     my $uploads = uploads_for('001');
 
-    like(
-        $uploads->{upload2}{tempname}, qr/\.pl$/,
-        'tempname preserves .pl suffix'
-    );
+	{
+		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload2}{tempname} );	
+		like(
+			$file, qr/\.pl$/,
+			'tempname preserves .pl suffix'
+		);
+	}
 
-    unlike(
-        $uploads->{upload4}{tempname}, qr/\..+$/,
-        'tempname for upload4 has no suffix'
-    );
+	{
+		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload4}{tempname} );	
+		unlike(
+			$file, qr/\..+$/,
+			'tempname for upload4 has no suffix'
+		);
+	}
+
 }
 
 {
     my $uploads = uploads_for('006');
 
-    like(
-        $uploads->{upload2}{tempname}, qr/\.pl$/,
-        'tempname preserves .pl suffix with Windows filename'
-    );
+	{
+		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload2}{tempname} );	
+		like(
+			$file, qr/\.pl$/,
+			'tempname preserves .pl suffix with Windows filename'
+		);
+	}
+
 }
 
 {
     my $uploads = uploads_for('014');
 
-    like(
-        $uploads->{upload}{tempname}, qr/\.foo\.txt$/,
-        'tempname preserves .foo.txt suffix'
-    );
+	{
+		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload}{tempname} );	
+		like(
+			$file, qr/\.foo\.txt$/,
+			'tempname preserves .foo.txt suffix'
+		);
+	}
 
-    like(
-        $uploads->{upload2}{tempname}, qr/\.txt$/,
-        'tempname preserves .txt suffix when dir name has .'
-    );
+	{
+		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload2}{tempname} );	
+		like(
+			$file, qr/\.txt$/,
+			'tempname preserves .txt suffix when dir name has .'
+		);
+	}
 
-    like(
-        $uploads->{upload2}{tempname}, qr/[\\\/]\w+.txt$/,
-        'tempname only gets extension from filename, not from a directory name'
-    );
+	like(
+		$uploads->{upload2}{tempname}, qr/[\\\/]\w+.txt$/,
+		'tempname only gets extension from filename, not from a directory name'
+	);
+
 }
 
 sub uploads_for {
