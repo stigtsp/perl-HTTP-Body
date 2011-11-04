@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+1.14    Tue 26 Oct 2010 19:42:00 CET
+        - removed benchmark test data and benchmark script for release (Torsten Raudssus [GETTY])
+
 1.12    Sat 19 Mar 2011 19:05:17 CET
         - Fixed the t/08 test
 
