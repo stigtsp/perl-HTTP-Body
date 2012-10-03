@@ -9,7 +9,8 @@ our $TYPES = {
     'application/x-www-form-urlencoded' => 'HTTP::Body::UrlEncoded',
     'multipart/form-data'               => 'HTTP::Body::MultiPart',
     'multipart/related'                 => 'HTTP::Body::XFormsMultipart',
-    'application/xml'                   => 'HTTP::Body::XForms'
+    'application/xml'                   => 'HTTP::Body::XForms',
+    'application/json'                  => 'HTTP::Body::OctetStream',
 };
 
 require HTTP::Body::OctetStream;
@@ -55,9 +56,9 @@ HTTP::Body - HTTP Body Parser
 
 =head1 DESCRIPTION
 
-HTTP::Body parses chunks of HTTP POST data and supports 
-application/octet-stream, application/x-www-form-urlencoded, and
-multipart/form-data.
+HTTP::Body parses chunks of HTTP POST data and supports
+application/octet-stream, application/json, application/x-www-form-urlencoded,
+and multipart/form-data.
 
 Chunked bodies are supported by not passing a length value to new().
 
@@ -89,9 +90,12 @@ sub new {
     }
 
     my $type;
+    my $earliest_index;
     foreach my $supported ( keys %{$TYPES} ) {
-        if ( index( lc($content_type), $supported ) >= 0 ) {
-            $type = $supported;
+        my $index = index( lc($content_type), $supported );
+        if ($index >= 0 && (!defined $earliest_index || $index < $earliest_index)) {
+            $type           = $supported;
+            $earliest_index = $index;
         }
     }
 
