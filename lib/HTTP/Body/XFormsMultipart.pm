@@ -30,7 +30,7 @@ parameter XForms:Model.
 
 =item init
 
-This function is overrided to detect the start part of the
+This function is overridden to detect the start part of the
 multipart/related post.
 
 =cut
@@ -60,7 +60,7 @@ sub start {
 
 =item handler
 
-This function is overrided to differ the start part, which should be
+This function is overridden to differ the start part, which should be
 set as the XForms:Model param if its content type is application/xml.
 
 =cut
