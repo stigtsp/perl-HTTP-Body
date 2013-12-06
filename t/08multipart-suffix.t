@@ -24,7 +24,7 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 	{
 		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload2}{tempname} );	
 		like(
-			$file, qr/\.pl$/,
+			$file, qr/^.{10}\.pl$/,
 			'tempname preserves .pl suffix'
 		);
 	}
@@ -32,7 +32,7 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 	{
 		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload4}{tempname} );	
 		unlike(
-			$file, qr/\..+$/,
+			$file, qr/^.{10}\..+$/,
 			'tempname for upload4 has no suffix'
 		);
 	}
@@ -45,7 +45,7 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 	{
 		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload2}{tempname} );	
 		like(
-			$file, qr/\.pl$/,
+			$file, qr/^.{10}\.pl$/,
 			'tempname preserves .pl suffix with Windows filename'
 		);
 	}
@@ -58,7 +58,7 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 	{
 		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload}{tempname} );	
 		like(
-			$file, qr/\.foo\.txt$/,
+			$file, qr/^.{10}\.foo\.txt$/,
 			'tempname preserves .foo.txt suffix'
 		);
 	}
@@ -66,7 +66,7 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 	{
 		my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload2}{tempname} );	
 		like(
-			$file, qr/\.txt$/,
+			$file, qr/^.{10}\.txt$/,
 			'tempname preserves .txt suffix when dir name has .'
 		);
 	}
