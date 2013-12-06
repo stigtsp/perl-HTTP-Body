@@ -1,5 +1,16 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
+{{$NEXT}}
+        - Added configurable basename regexp, test added with fixed regexp for next release
+          (Torsten Raudssus [GETTY])
+        - Added .gitignore
+
+1.16    Wed, 3 Oct 2012 15:18:47 CET
+        - Added support for application/json (Gareth Kirwan [GBJK])
+
+1.15    Mon, 5 Dec 2011 02:59:02 CET
+        - Added missing requirement (Torsten Raudssus [GETTY])
+
 1.14    Tue 26 Oct 2010 19:42:00 CET
         - removed benchmark test data and benchmark script for release (Torsten Raudssus [GETTY])
 
