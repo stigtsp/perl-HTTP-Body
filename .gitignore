@@ -1,0 +1,8 @@
+HTTP-Body-*
+.build
+po-files/*
+*~
+*.sw*
+*.csv
+local-lib
+*.json
