@@ -1,7 +1,11 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
 {{$NEXT}}
-	- Release for cleanup of dzil
+        -new method 'part_data' which preserves multipart meta information just in cause
+          you have a form upload with unexpected charsets, etc.
+
+1.19
+        - Release for cleanup of dzil
 
 1.18      2013-12-06 10:05:33 America/New_York
         - Added configurable basename regexp, test added with fixed regexp for next release

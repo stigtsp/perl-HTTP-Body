@@ -300,8 +300,11 @@ sub handler {
                 $self->upload( $part->{name}, $part );
             }
         }
+        # If we have more than the content-disposition, we need to create a
+        # data key so that we don't waste the headers.
         else {
             $self->param( $part->{name}, $part->{data} );
+            $self->part_data( $part->{name}, $part )
         }
     }
 }
