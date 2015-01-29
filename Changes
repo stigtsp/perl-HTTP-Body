@@ -1,6 +1,9 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
 {{$NEXT}}
+        - Fix for the fix..... don't ask
+
+1.21      2015-01-29 04:48:58+01:00 Europe/Berlin
 	- Fix for failing test if Plack is not installed
 
 1.20      2015-01-28 16:20:59+01:00 Europe/Berlin

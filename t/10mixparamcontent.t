@@ -7,7 +7,6 @@ use Test::Deep;
 use HTTP::Body;
 use HTTP::Request::Common;
 use Encode;
-use HTTP::Message::PSGI ();
 use File::Spec::Functions;
 use File::Temp qw/ tempdir /;
 
