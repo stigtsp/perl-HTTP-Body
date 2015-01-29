@@ -1,6 +1,9 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
 {{$NEXT}}
+	- Fix for failing test if Plack is not installed
+
+1.20      2015-01-28 16:20:59+01:00 Europe/Berlin
         -new method 'part_data' which preserves multipart meta information just in cause
           you have a form upload with unexpected charsets, etc.
 
