@@ -14,7 +14,7 @@ HTTP::Body::MultiPart - HTTP Body Multipart Parser
 
 =head1 SYNOPSIS
 
-    use HTTP::Body::Multipart;
+    use HTTP::Body::MultiPart;
 
 =head1 DESCRIPTION
 
