@@ -1,6 +1,8 @@
 This file documents the revision history for Perl extension HTTP::Body.
 
 {{$NEXT}}
+
+1.22      2015-01-29 04:51:51+01:00 Europe/Berlin
         - Fix for the fix..... don't ask
 
 1.21      2015-01-29 04:48:58+01:00 Europe/Berlin
