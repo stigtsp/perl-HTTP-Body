@@ -255,8 +255,7 @@ sub parse_body {
 
 =cut
 
-our $basename_regexp = qr/[^.]+(\.[^\\\/]+)$/;
-#our $basename_regexp = qr/(\.\w+(?:\.\w+)*)$/;
+our $basename_regexp = qr/((?:\.[A-Za-z0-9_-]{1,32}){1,3})$/;
 
 sub handler {
     my ( $self, $part ) = @_;

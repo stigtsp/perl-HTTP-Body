@@ -6,7 +6,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use Test::More tests => 3;
+use Test::More tests => 5;
 use Test::Deep;
 
 use Cwd;
@@ -19,7 +19,6 @@ use File::Temp qw/ tempdir /;
 my $path = catdir( getcwd(), 't', 'data', 'multipart' );
 
 {
-  $HTTP::Body::MultiPart::basename_regexp = qr/(\.\w+(?:\.\w+)*)$/;
 
     my $uploads = uploads_for('015');
 
@@ -47,6 +46,21 @@ my $path = catdir( getcwd(), 't', 'data', 'multipart' );
     );
   }
 
+  {
+    my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload4}{tempname} );
+    like(
+      $file, qr/^.{10}\.something$/,
+      'shell chars dont show up in ext'
+    );
+  }
+
+  {
+    my ($volume,$directories,$file) = File::Spec->splitpath( $uploads->{upload5}{tempname} );
+    like(
+      $file, qr/^.{10}\.txt$/,
+      'long extensions are ignored'
+    );
+  }
 }
 
 sub uploads_for {
